@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>{% block title %}{% endblock title %} - Movie</title>
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
+    <style>
+        .thumbnail p, .thumbnail h4 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            }
+        .star-rating {
+            line-height:32px;
+            font-size:1.25em;
+            margin-left:-33px;
+            }
+        .star-rating .fa-star{
+        color: yellow;
+        }
+        .heart-rating {
+            line-height:32px;
+            font-size:1.25em;
+            margin-left:-33px;
+            }
+        .heart-rating .fa-heart{
+        color:yellow;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-5">
+            <a class="navbar-brand" href="{% url 'index' %}">MOVIELens</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recommend' %}">Recommendations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'watch' %}">My Watch List</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% if user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{# url 'profile' #}">Profile</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'signup' %}">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block content %}{% endblock content %}
+    <!-- Footer-->
+    <footer class="py-5 bg-dark mt-auto">
+        <div class="container px-5">
+            <p class="m-0 text-center text-white">
+                &copy; MOVIELens {% now 'Y' %}</p>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="{% static 'scripts/jquery.min.js'%}"></script>
+    <script src="{% static 'scripts/bootstrap.bundle.min.js' %}"></script>
+
+        <script type="text/javascript">
+            var $star_rating = $('.star-rating .fa');
+
+            var SetRatingStar = function () {
+                return $star_rating.each(function () {
+                    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+                        return $(this).removeClass('fa-star-o').addClass('fa-star');
+                    } else {
+                        return $(this).removeClass('fa-star').addClass('fa-star-o');
+                    }
+                });
+            };
+
+            $star_rating.on('click', function () {
+                $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+                return SetRatingStar();
+            });
+
+            SetRatingStar();
+            $(document).ready(function () {
+
+            });
+
+        </script>
+        <script type="text/javascript">
+            function validateForm() {
+                var x = document.forms["ratingForm"]["rating"].value;
+                if (x == "0") {
+                    alert("Invalid Input");
+                    return false;
+                }
+            }
+        </script>
+
+</body>
+
+</html>

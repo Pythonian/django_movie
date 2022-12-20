@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Movie Recommendations{% endblock title %}
+
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center my-5">
+                    <h1 class="display-5 fw-bolder text-white mb-2">Movie Recommendations For You</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="bg-light py-5 border-bottom">
+    <div class="container px-5 my-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bolder">Your movie recommendations</h2>
+        </div>
+        <div class="row gx-5 justify-content-center">
+            {% for movie in movie_list %}
+            <div class="col-lg-6 col-xl-4">
+                <div class="card mb-5">
+                    <img src="{{ movie.movie_logo.url}}" class="card-img-top" width="150px">
+                    <div class="card-body p-5">
+                        <div class="small text-uppercase fw-bold text-muted">{{movie.genre}}</div>
+                        <div class="mb-3">
+                            <h4>{{movie.title}}</h4>
+                        </div>
+                        
+                        <div class="d-grid"><a class="btn btn-outline-primary"
+                                href="{% url 'detail' movie.id %}">View Details</a></div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            Sorry! No movies in your list.
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
